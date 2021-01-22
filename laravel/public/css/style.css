@@ -1,0 +1,45 @@
+h1{
+    width: 330px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: left;
+    padding-left: 0px;
+}
+
+html{
+    background-color: silver;
+}
+
+form, h1{
+    text-align: center;
+}
+
+table{
+    width: 700px;
+}
+
+th{
+    background-color: black;
+    color: white;
+}
+
+body{
+    width: 800px;
+    height: 1200px;
+    margin-top: -20px;
+    background-color: white;
+    margin: auto;
+}
+
+p{
+    margin-top: 0px;
+    margin-bottom: 0px  ;
+}
+
+.logout{
+    margin-left: 360px;
+}
+
+.Choice{
+    border-bottom: 3px solid  #ca3d94;;
+}
