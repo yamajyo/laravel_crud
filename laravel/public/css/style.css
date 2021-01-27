@@ -18,7 +18,7 @@ table{
     width: 700px;
 }
 
-th{
+.managementTable th{
     background-color: black;
     color: white;
 }
@@ -42,4 +42,55 @@ p{
 
 .Choice{
     border-bottom: 3px solid  #ca3d94;;
+}
+
+.site_list th, td{
+    text-align: center;
+}
+
+.site_list{
+    margin: auto;
+    margin-top: 50px;
+    border-collapse: collapse
+}
+
+.site_list th{
+    width: 150px;
+}
+
+.edit_form{
+    margin: auto;
+    margin-top: 50px;
+    border-collapse: collapse
+}
+
+.edit_form th{
+    width: 150px;
+}
+
+.edit_form td{
+    text-align: left;
+}
+
+.proceed{
+    margin-top: 30px;
+    border-radius: 3px;
+}
+
+.conf_submit{
+    margin-left: 50px;
+}
+
+.conf_submit .proceed{
+    width: 150px;
+    margin-left: 200px;
+}
+
+.conf_submit .return{
+    width: 100px;
+    box-shadow: 2px 2px;
+}
+
+.site_category_list{
+    width: 80px;
 }

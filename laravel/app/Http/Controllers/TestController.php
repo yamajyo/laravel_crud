@@ -32,7 +32,6 @@ class TestController extends Controller
         } else {
             return redirect('test');
         }
-
     }
 
     function logout()
