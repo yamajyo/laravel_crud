@@ -31,10 +31,9 @@ class SiteController extends Controller
 
             $site_category_num = [];
 
-            foreach ($test as $key => $value) {
+            foreach ($test as $value) {
                 $site_category_num[] = $value->site_category_id;
             }
-            dd($site_category_num);
 
             $p = [
                 'name' => $dbRecord->name,
@@ -42,7 +41,8 @@ class SiteController extends Controller
                 'description' => $dbRecord->description,
                 'turn' => $dbRecord->turn,
                 'img' => $dbRecord->img,
-                'site_category_num' => $site_category_num
+                'site_category_num' => $site_category_num,
+                'record_id' => $dbRecord->id
             ];
         } else {
             $p = '';
@@ -64,7 +64,8 @@ class SiteController extends Controller
             'img' => $request->img,
             'description' => $request->description,
             'turn' => $request->turn,
-            'site_category_num' => $request->site_category_num
+            'site_category_num' => $request->site_category_num,
+            'record_id' => isset($request->record_id) ? $request->record_id : null
         ];
 
         return view('edit', ['item' => $p, 'site_category_list' => $site_category_list, 'userName' => $userNme]);
@@ -94,7 +95,8 @@ class SiteController extends Controller
             'img' => $request->img,
             'description' => $request->description,
             'turn' => $request->turn,
-            's' => $request->site_category
+            's' => $request->site_category,
+            'record_id' => isset($request->id) ? $request->id : null
         ];
         return view('conf', ['item' => $p, 'userName' => $userNme]);
     }
@@ -102,26 +104,64 @@ class SiteController extends Controller
     function done(Request $request)
     {
         $userNme = $request->session()->get('name');
+        $site = Site::find($request->id);
 
-        $site = new Site();
-        $pp = $request->all();
+        if (isset($request->id)) {
+            $site = Site::find($request->id);
 
-        DB::transaction(function() use ($pp, $site) {
-            unset($pp['token']);
-            $site->delete_flg = false;
-            $site->fill($pp)->save();
+            $pp = $request->all();
 
-            $lastInsertId = DB::getPdo()->lastInsertId();
-            foreach ($pp['site_category_num'] as $value) {
-                if (isset($value)) {
-                    $site_site_category = new Site_site_category();
-                    $site_site_category->site_id = $lastInsertId;
-                    $site_site_category->site_category_id = $value;
-                    $site_site_category->save();
+            $id = $request->id;
+            DB::transaction(function() use ($id, $pp, $site) {
+                unset($pp['token']);
+                $site->delete_flg = false;
+                $site->fill($pp)->save();
+
+                Site_site_category::where('site_id', $site->id)->delete();
+
+                $lastInsertId = $id;
+
+
+                foreach ($pp['site_category_num'] as $value) {
+                    if (isset($value)) {
+
+                        $site_site_category = new Site_site_category();
+                        $site_site_category->site_id = $lastInsertId;
+                        $site_site_category->site_category_id = $value;
+                        $site_site_category->save();
+                    }
                 }
-            }
-        });
+            });
+
+        } else {
+            $site = new Site();
+            $pp = $request->all();
+
+            DB::transaction(function() use ($pp, $site) {
+                unset($pp['token']);
+                $site->delete_flg = false;
+                $site->fill($pp)->save();
+
+                $lastInsertId = DB::getPdo()->lastInsertId();
+                foreach ($pp['site_category_num'] as $value) {
+                    if (isset($value)) {
+                        $site_site_category = new Site_site_category();
+                        $site_site_category->site_id = $lastInsertId;
+                        $site_site_category->site_category_id = $value;
+                        $site_site_category->save();
+                    }
+                }
+            });
+        }
 
         return view('done', ['userName' => $userNme]);
+    }
+
+    function delete(Request $request)
+    {
+        Site::find($request->id)->delete();
+        Site_site_category::where('site_id', $request->id)->delete();
+
+        return redirect('/list');
     }
 }

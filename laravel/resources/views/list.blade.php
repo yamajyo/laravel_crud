@@ -19,7 +19,7 @@
                     <td>{{$item->updated_at}}</td>
                     <td>
                         <button onclick="location.href='/edit?id={{$item->id}}'">編集</button>
-                        <button>削除</button>
+                        <button onclick="location.href='/delete?id={{$item->id}}'">削除</button>
                     </td>
                 </tr>
             @endforeach

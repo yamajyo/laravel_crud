@@ -20,7 +20,7 @@ Route::get('/edit', 'SiteController@edit');
 Route::post('/edit', 'SiteController@editPos');
 Route::post('/conf', 'SiteController@conf');
 Route::post('/done', 'SiteController@done');
-Route::get('/e', 'SiteController@test');
+Route::get('/delete', 'SiteController@delete');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -36,7 +36,7 @@
                     <td>{{$item['turn']}}</td>
                 </tr>
         </table>
-        <form action="/edit" method="post">
+        <form action="/edit{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
             @csrf
             @for ($i = 0; $i < count($item['s']); $i++)
                 <input type="hidden" value="{{$item['s'][$i]}}" name="site_category_num[{{$i}}]">
@@ -48,7 +48,7 @@
             <input type="hidden" value="{{$item['turn']}}" name="turn">
             <p><input type="submit" value="修正"></p>
         </form>
-        <form action="/done" method="post">
+        <form action="/done{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
             @csrf
             @for ($i = 0; $i < count($item['s']); $i++)
                 <input type="hidden" value="{{$item['s'][$i]}}" name="site_category_num[{{$i}}]">

@@ -1,7 +1,7 @@
 @extends('top')
 
 @section('site')
-    <form action="/conf" method="post">
+    <form action="/conf{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
         @csrf
         <table class="edit_form" border="1">
             <tr>
@@ -11,7 +11,7 @@
                         <select name="site_category[]" class="site_category_list">
                             <option value="">------</option>
                             @foreach ($site_category_list as $value)
-                                <option value="{{$value->id}}" {{isset($item['site_category_num']) && $item['site_category_num'][$i] == $value->id ? 'selected' : ''}}>{{$value->name}}</option>
+                                <option value="{{$value->id}}" {{isset($item['site_category_num'][$i]) && $item['site_category_num'][$i] == $value->id ? 'selected' : ''}}>{{$value->name}}</option>
                             @endforeach
                         </select>
                     @endfor
