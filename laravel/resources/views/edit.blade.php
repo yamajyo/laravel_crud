@@ -26,6 +26,10 @@
                 <td><input type="text" name="url" value="{{isset($item['url']) ? $item['url'] : ''}}"></td>
             </tr>
             <tr>
+                <th>サイト画像名:</th>
+                <td><input type="text" name="img" value="{{isset($item['img']) ? $item['img'] : ''}}"></td>
+            </tr>
+            <tr>
                 <th>サイト説明:</th>
                 <td>
                     <textarea name="description" id="" cols="30" rows="10" value="{{isset($item['description']) ? $item['description'] : ''}}">{{isset($item['description']) ? $item['description'] : ''}}</textarea>

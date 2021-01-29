@@ -24,6 +24,10 @@
                     <td>{{$item['url']}}</td>
                 </tr>
                 <tr>
+                    <th>サイト画像名</th>
+                    <td>{{$item['img']}}</td>
+                </tr>
+                <tr>
                     <th>サイト説明</th>
                     <td>{{$item['description']}}</td>
                 </tr>
@@ -39,6 +43,7 @@
             @endfor
             <input type="hidden" value="{{$item['name']}}" name="name">
             <input type="hidden" value="{{$item['url']}}" name="url">
+            <input type="hidden" value="{{$item['img']}}" name="img">
             <input type="hidden" value="{{$item['description']}}" name="description">
             <input type="hidden" value="{{$item['turn']}}" name="turn">
             <p><input type="submit" value="修正"></p>
@@ -50,6 +55,7 @@
             @endfor
             <input type="hidden" value="{{$item['name']}}" name="name">
             <input type="hidden" value="{{$item['url']}}" name="url">
+            <input type="hidden" value="{{$item['img']}}" name="img">
             <input type="hidden" value="{{$item['description']}}" name="description">
             <input type="hidden" value="{{$item['turn']}}" name="turn">
             <p><input type="submit" value="登録完了"></p>
