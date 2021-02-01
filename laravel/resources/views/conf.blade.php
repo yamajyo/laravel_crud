@@ -4,13 +4,13 @@
 
 @endphp
 @section('site')
-        <table class="site_list" border="1">
+        <table class="conf_table">
                 <tr>
                     <th>サイトカテゴリー</th>
                     <td>
-                        @if (!empty($item['site']))
-                            @foreach ($item['site'] as $value)
-                                {{$value}}
+                        @if (!empty($item['siteCategoryNameList']))
+                            @foreach ($item['siteCategoryNameList'] as $value)
+                                {{$value}}<br>
                             @endforeach
                         @endif
                     </td>
@@ -35,29 +35,33 @@
                     <th>表示順</th>
                     <td>{{$item['turn']}}</td>
                 </tr>
+                <tr>
+                    <th colspan="2" class="send">
+                        <form action="/edit{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
+                            @csrf
+                            @for ($i = 0; $i < count($item['siteCategoryIdList']); $i++)
+                                <input type="hidden" value="{{$item['siteCategoryIdList'][$i]}}" name="site_category_num[{{$i}}]">
+                            @endfor
+                            <input type="hidden" value="{{$item['name']}}" name="name">
+                            <input type="hidden" value="{{$item['url']}}" name="url">
+                            <input type="hidden" value="{{$item['img']}}" name="img">
+                            <input type="hidden" value="{{$item['description']}}" name="description">
+                            <input type="hidden" value="{{$item['turn']}}" name="turn">
+                            <p><input type="submit" class="return" value="修正"></p>
+                        </form>
+                        <form action="/done{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
+                            @csrf
+                            @for ($i = 0; $i < count($item['siteCategoryIdList']); $i++)
+                                <input type="hidden" value="{{$item['siteCategoryIdList'][$i]}}" name="site_category_num[{{$i}}]">
+                            @endfor
+                            <input type="hidden" value="{{$item['name']}}" name="name">
+                            <input type="hidden" value="{{$item['url']}}" name="url">
+                            <input type="hidden" value="{{$item['img']}}" name="img">
+                            <input type="hidden" value="{{$item['description']}}" name="description">
+                            <input type="hidden" value="{{$item['turn']}}" name="turn">
+                            <p><input type="submit" class="conf_proceed" value="登録完了"></p>
+                        </form>
+                    </th>
+                </tr>
         </table>
-        <form action="/edit{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
-            @csrf
-            @for ($i = 0; $i < count($item['s']); $i++)
-                <input type="hidden" value="{{$item['s'][$i]}}" name="site_category_num[{{$i}}]">
-            @endfor
-            <input type="hidden" value="{{$item['name']}}" name="name">
-            <input type="hidden" value="{{$item['url']}}" name="url">
-            <input type="hidden" value="{{$item['img']}}" name="img">
-            <input type="hidden" value="{{$item['description']}}" name="description">
-            <input type="hidden" value="{{$item['turn']}}" name="turn">
-            <p><input type="submit" value="修正"></p>
-        </form>
-        <form action="/done{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
-            @csrf
-            @for ($i = 0; $i < count($item['s']); $i++)
-                <input type="hidden" value="{{$item['s'][$i]}}" name="site_category_num[{{$i}}]">
-            @endfor
-            <input type="hidden" value="{{$item['name']}}" name="name">
-            <input type="hidden" value="{{$item['url']}}" name="url">
-            <input type="hidden" value="{{$item['img']}}" name="img">
-            <input type="hidden" value="{{$item['description']}}" name="description">
-            <input type="hidden" value="{{$item['turn']}}" name="turn">
-            <p><input type="submit" value="登録完了"></p>
-        </form>
 @endsection

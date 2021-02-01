@@ -23,10 +23,10 @@ table{
     color: white;
 }
 
-body{
-    width: 800px;
+.main{
+    width: 900px;
     height: 1200px;
-    margin-top: -20px;
+    margin-top: -50px;
     background-color: white;
     margin: auto;
 }
@@ -36,14 +36,6 @@ p{
     margin-bottom: 0px  ;
 }
 
-.logout{
-    margin-left: 360px;
-}
-
-.Choice{
-    border-bottom: 3px solid  #ca3d94;;
-}
-
 .site_list th, td{
     text-align: center;
 }
@@ -51,7 +43,7 @@ p{
 .site_list{
     margin: auto;
     margin-top: 50px;
-    border-collapse: collapse
+    width: 600px;
 }
 
 .site_list th{
@@ -97,4 +89,142 @@ p{
 
 img{
     width: 60px;
+}
+
+.login{
+   margin: auto;
+}
+
+.login_table tr th{
+    border: none;
+}
+
+.login_table tr td{
+    border: none;
+}
+
+
+.login_table{
+    margin-top: 30px;
+    margin-left: 320px;
+}
+
+.login_table tr td{
+    text-align: left;
+}
+
+.login_table tr th{
+    text-align: right;
+}
+
+.login_submit{
+    margin-top: 20px;
+    border-radius: 2px;
+}
+
+.logout{
+    margin-left: 580px;
+    text-decoration: none;
+}
+
+.sortLink {
+    display: block;
+    margin-bottom: 0px;
+    color: #5858ad;
+    font-size: 30px;
+    margin-bottom: -10px;
+    margin-top: -10px;
+    text-decoration: none;
+}
+
+button{
+    border-radius: 2px;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+th, td{
+    border: 1px solid black;
+}
+
+.send{
+    border:0px none;
+    display: inline-flex;
+}
+
+.proceed{
+    width: 130px;
+    border-radius: 5px;
+    box-shadow:1px 1px 1px 1px #555555;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.conf_proceed{
+    margin-left: 210px;
+    margin-top: 25px;
+    border-radius: 5px;
+    box-shadow:1px 1px 1px 1px #555555;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.return{
+    margin-top: 25px;
+    float: inline-start;
+    width: 90px;
+    color: #ffffff;
+    background-color: #888484;
+    border-radius: 5px;
+    box-shadow:1px 1px 1px 1px #888484;
+}
+
+.site_list{
+    width: 800px;
+}
+
+.managementTable th{
+    border: 2px white solid;
+}
+
+.Choice{
+    border-bottom: 2px solid #ff1493 !important;
+}
+
+.userName{
+    padding-top: 0px;
+}
+
+.edit{
+    border-radius: 5px;
+    border:2px solid #555555;
+}
+
+.delete{
+    border-radius: 5px;
+    border:2px solid #555555;
+    margin-left: -5px;
+}
+
+.register{
+    border-radius: 5px;
+    border:2px solid #555555;
+}
+
+.conf_table{
+    width: 620px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.conf_table tr th{
+    width: 150px;
+}
+
+.result{
+    text-align: center;
+    margin-top: 80px;
+    font-size: 25px;
 }

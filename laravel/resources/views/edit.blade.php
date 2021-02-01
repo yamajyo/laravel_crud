@@ -1,3 +1,4 @@
+<!-- edit画面のbladeテンプレート -->
 @extends('top')
 
 @section('site')

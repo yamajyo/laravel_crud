@@ -1,5 +1,5 @@
 @extends('top')
 
 @section('site')
-    <p>登録しました</p>
+    <p class="result">登録しました</p>
 @endsection

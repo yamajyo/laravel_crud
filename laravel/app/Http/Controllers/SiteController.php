@@ -9,120 +9,135 @@ use App\Site_site_category;
 
 class SiteController extends Controller
 {
-    function test()
-    {
-        $data = Site::all();
-        dd($data);
-    }
 
+    //list画面のアクション
     function list(Request $request)
     {
+        //ソートリンクを踏んだ場合の分岐
+        if (isset($request->column) && isset($request->sort)) {
+            $items = Site::orderByRaw($request->column . ' IS NULL ASC')->orderBy($request->column, $request->sort)->get();
+        } else {
+            $items = Site::all();
+        }
         $userNme = $request->session()->get('name');
-        $items = Site::all();
-        //これを使うとvar_dumpして処理がとまる
+
         return view('list', ['items' => $items, 'userName' => $userNme]);
     }
 
+    //edit画面へのアクション
     function edit(Request $request)
     {
-        if (isset($request->id)) {
+        $item = '';
+
+        $siteCategoryList = DB::select('select * from site_category');
+        $userNme = $request->session()->get('name');
+        return view('edit', ['userName' => $userNme, 'site_category_list' => $siteCategoryList, 'item' => $item]);
+    }
+
+    //confから戻っってきた時のアクション
+    function editPos(Request $request)
+    {
+        $siteCategoryList = DB::select('select * from site_category');
+
+        $userName = $request->session()->get('name');
+
+        //リクエストのパラメーターにidが含まれていたら(listページの編集ボタンをからの遷移であれば)
+        //DBのレコードを取得し表示
+        if (!isset($request->修正)) {
             $dbRecord = Site::find($request->id);
-            $test = Site_site_category::where('site_id', $request->id)->get();
+            $siteCategoryIds = Site_site_category::where('site_id', $request->id)->get();
 
-            $site_category_num = [];
+            $siteCategoryNum = [];
 
-            foreach ($test as $value) {
-                $site_category_num[] = $value->site_category_id;
+            foreach ($siteCategoryIds as $value) {
+                $siteCategoryNum[] = $value->site_category_id;
             }
 
-            $p = [
+            $item = [
                 'name' => $dbRecord->name,
                 'url' => $dbRecord->url,
                 'description' => $dbRecord->description,
                 'turn' => $dbRecord->turn,
                 'img' => $dbRecord->img,
-                'site_category_num' => $site_category_num,
+                'site_category_num' => $siteCategoryNum,
                 'record_id' => $dbRecord->id
             ];
+
         } else {
-            $p = '';
+            $item = [
+                'name' => $request->name,
+                'url' => $request->url,
+                'img' => $request->img,
+                'description' => $request->description,
+                'turn' => $request->turn,
+                'site_category_num' => $request->site_category_num,
+                'record_id' => isset($request->record_id) ? $request->record_id : null
+            ];
         }
 
-        $site_category_list = DB::select('select * from site_category');
-        $userNme = $request->session()->get('name');
-        return view('edit', ['userName' => $userNme, 'site_category_list' => $site_category_list, 'item' => $p]);
+        return view('edit', ['item' => $item, 'site_category_list' => $siteCategoryList, 'userName' => $userName]);
     }
 
-    function editPos(Request $request)
-    {
-        $site_category_list = DB::select('select * from site_category');
-
-        $userNme = $request->session()->get('name');
-        $p = [
-            'name' => $request->name,
-            'url' => $request->url,
-            'img' => $request->img,
-            'description' => $request->description,
-            'turn' => $request->turn,
-            'site_category_num' => $request->site_category_num,
-            'record_id' => isset($request->record_id) ? $request->record_id : null
-        ];
-
-        return view('edit', ['item' => $p, 'site_category_list' => $site_category_list, 'userName' => $userNme]);
-    }
-
+    //conf画面のアクション
     function conf(Request $request)
     {
         $site_category_list = DB::select('select * from site_category');
+
+        //サイトのカテゴリーをさ選択した分だけ表示するために
+        //まずsite_categoryテーブルからvalueで送られてきた値を元に
+        //site_categoryのidの配列を作成
         foreach ($request->site_category as $value) {
             if (isset($value)) {
-                $site_array[] = $site_category_list[$value - 1]->id;
+                $siteCategoryIdList[] = $site_category_list[$value - 1]->id;
             }
         }
 
-        if (isset($site_array)) {
-            foreach ($site_array as $value) {
-                $site_array2[] = $site_category_list[$value - 1]->name;
+        //上記で作成した配列を元にsite_categoryのnameカラム（カテゴリーの名前）を取得し
+        //配列化
+        if (isset($siteCategoryIdList)) {
+            foreach ($siteCategoryIdList as $value) {
+                $siteCategoryNameList[] = $site_category_list[$value - 1]->name;
             }
         }
 
         $userNme = $request->session()->get('name');
 
-        $p = [
-            'site' => isset($site_array2) ? $site_array2 : '',
+        $item = [
+            'siteCategoryNameList' => isset($siteCategoryNameList) ? $siteCategoryNameList : '',
             'name' => $request->name,
             'url' => $request->url,
             'img' => $request->img,
             'description' => $request->description,
             'turn' => $request->turn,
-            's' => $request->site_category,
+            'siteCategoryIdList' => $request->site_category,
             'record_id' => isset($request->id) ? $request->id : null
         ];
-        return view('conf', ['item' => $p, 'userName' => $userNme]);
+        return view('conf', ['item' => $item, 'userName' => $userNme]);
     }
 
+    //登録する際のアクション
     function done(Request $request)
     {
         $userNme = $request->session()->get('name');
-        $site = Site::find($request->id);
 
+        //idがあったら編集
         if (isset($request->id)) {
             $site = Site::find($request->id);
 
-            $pp = $request->all();
+            $bindValues = $request->all();
 
             $id = $request->id;
-            DB::transaction(function() use ($id, $pp, $site) {
-                unset($pp['token']);
+            DB::transaction(function() use ($id, $bindValues, $site) {
+                unset($bindValues['token']);
                 $site->delete_flg = false;
-                $site->fill($pp)->save();
+                $site->fill($bindValues)->save();
 
                 Site_site_category::where('site_id', $site->id)->delete();
 
                 $lastInsertId = $id;
 
 
-                foreach ($pp['site_category_num'] as $value) {
+                foreach ($bindValues['site_category_num'] as $value) {
                     if (isset($value)) {
 
                         $site_site_category = new Site_site_category();
@@ -135,15 +150,15 @@ class SiteController extends Controller
 
         } else {
             $site = new Site();
-            $pp = $request->all();
+            $bindValues = $request->all();
 
-            DB::transaction(function() use ($pp, $site) {
-                unset($pp['token']);
+            DB::transaction(function() use ($bindValues, $site) {
+                unset($bindValues['token']);
                 $site->delete_flg = false;
-                $site->fill($pp)->save();
+                $site->fill($bindValues)->save();
 
                 $lastInsertId = DB::getPdo()->lastInsertId();
-                foreach ($pp['site_category_num'] as $value) {
+                foreach ($bindValues['site_category_num'] as $value) {
                     if (isset($value)) {
                         $site_site_category = new Site_site_category();
                         $site_site_category->site_id = $lastInsertId;
@@ -157,6 +172,7 @@ class SiteController extends Controller
         return view('done', ['userName' => $userNme]);
     }
 
+    //delete空のアクション
     function delete(Request $request)
     {
         Site::find($request->id)->delete();
