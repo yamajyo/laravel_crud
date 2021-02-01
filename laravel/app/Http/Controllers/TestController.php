@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class TestController extends Controller
 {
@@ -16,15 +17,31 @@ class TestController extends Controller
     //ログインフォームのpostリクエスト（ログインチェック）
     function testPos(Request $request)
     {
-        $email = $request->email;
-        $password = $request->password;
+        $rules = [
+            'mail' => 'email'
+        ];
 
-        //ログインチェック attempt関数の戻り値がtureならログイン、falseなら初期画面へリダイレクト
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            $request->session()->put('name', Auth::user()->name);
-            return redirect('\top');
+        $messages = [
+            'mail.email' => 'メールドレスを正しく入力して下さい'
+        ];
+        $result = Validator::make($request->all(), $rules, $messages);
+
+        //入力のバリデーション
+        //fails関数はエラーがあればtrue、なければfalse
+        if ($result->fails()) {
+            return  redirect('\test')->withErrors($result)->withInput();
         } else {
-            return redirect('\test');
+            $email = $request->mail;
+            $password = $request->password;
+
+            //ログインチェック attempt関数の戻り値がtureならログイン、falseなら初期画面をview関数でリロード
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                $request->session()->put('name', Auth::user()->name);
+                return redirect('\top');
+            } else {
+                $dbErrorMessage = 'メールアドレスかパスワードが間違っています';
+                return view('test', ['dbErrorMessage' => $dbErrorMessage]);
+            }
         }
     }
 

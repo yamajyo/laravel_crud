@@ -228,3 +228,8 @@ th, td{
     margin-top: 80px;
     font-size: 25px;
 }
+
+.error{
+    text-align: center;
+    color: red;
+}
