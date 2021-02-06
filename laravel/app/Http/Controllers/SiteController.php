@@ -38,16 +38,22 @@ class SiteController extends Controller
     function editPos(Request $request)
     {
         $siteCategoryList = DB::select('select * from site_category');
-
         $userName = $request->session()->get('name');
 
-        //リクエストのパラメーターにidが含まれていたら(listページの編集ボタンをからの遷移であれば)
-        //DBのレコードを取得し表示
-        if (!isset($request->修正)) {
+        //confの修正ボタンが押され、confからの遷移かの分岐
+        if (isset($request->return)) {
+            $item = [
+                'name' => $request->name,
+                'url' => $request->url,
+                'img' => $request->img,
+                'description' => $request->description,
+                'turn' => $request->turn,
+                'site_category_num' => $request->site_category_num,
+                'record_id' => $request->id
+            ];
+        } else {
             $dbRecord = Site::find($request->id);
             $siteCategoryIds = Site_site_category::where('site_id', $request->id)->get();
-
-            $siteCategoryNum = [];
 
             foreach ($siteCategoryIds as $value) {
                 $siteCategoryNum[] = $value->site_category_id;
@@ -62,17 +68,6 @@ class SiteController extends Controller
                 'site_category_num' => $siteCategoryNum,
                 'record_id' => $dbRecord->id
             ];
-
-        } else {
-            $item = [
-                'name' => $request->name,
-                'url' => $request->url,
-                'img' => $request->img,
-                'description' => $request->description,
-                'turn' => $request->turn,
-                'site_category_num' => $request->site_category_num,
-                'record_id' => isset($request->record_id) ? $request->record_id : null
-            ];
         }
 
         return view('edit', ['item' => $item, 'site_category_list' => $siteCategoryList, 'userName' => $userName]);
@@ -81,21 +76,14 @@ class SiteController extends Controller
     //conf画面のアクション
     function conf(Request $request)
     {
+        //ここの戻り値は多次元配列1次元目が只の配列、2次元目の要素はインスタンス
         $site_category_list = DB::select('select * from site_category');
 
-        //サイトのカテゴリーをさ選択した分だけ表示するために
+        //サイトのカテゴリーを選択した分だけ表示するために
         //まずsite_categoryテーブルからvalueで送られてきた値を元に
-        //site_categoryのidの配列を作成
+        //site_categoryのnameのを取得し選択したカテゴリー名の配列を作成
         foreach ($request->site_category as $value) {
             if (isset($value)) {
-                $siteCategoryIdList[] = $site_category_list[$value - 1]->id;
-            }
-        }
-
-        //上記で作成した配列を元にsite_categoryのnameカラム（カテゴリーの名前）を取得し
-        //配列化
-        if (isset($siteCategoryIdList)) {
-            foreach ($siteCategoryIdList as $value) {
                 $siteCategoryNameList[] = $site_category_list[$value - 1]->name;
             }
         }
@@ -123,27 +111,21 @@ class SiteController extends Controller
         //idがあったら編集
         if (isset($request->id)) {
             $site = Site::find($request->id);
-
             $bindValues = $request->all();
 
-            $id = $request->id;
-            DB::transaction(function() use ($id, $bindValues, $site) {
+            DB::transaction(function() use ($bindValues, $site) {
                 unset($bindValues['token']);
-                $site->delete_flg = false;
                 $site->fill($bindValues)->save();
 
                 Site_site_category::where('site_id', $site->id)->delete();
-
-                $lastInsertId = $id;
-
+                $siteId = $site->id;
 
                 foreach ($bindValues['site_category_num'] as $value) {
                     if (isset($value)) {
-
                         $site_site_category = new Site_site_category();
-                        $site_site_category->site_id = $lastInsertId;
+                        $site_site_category->site_id = $siteId;
                         $site_site_category->site_category_id = $value;
-                        $site_site_category->save();
+                        $site_site_category->update();
                     }
                 }
             });
@@ -179,5 +161,14 @@ class SiteController extends Controller
         Site_site_category::where('site_id', $request->id)->delete();
 
         return redirect('/list');
+    }
+
+    function join()
+    {
+        $id = 3;
+        $site = Site::find(15);
+        $test1 =  DB::table('sites')->join('site_site_categorys', 'sites.id', '=', 'site_site_categorys.site_id')->get();
+        $test =  DB::table('sites')->join('site_site_categorys', 'sites.id', '=', 'site_site_categorys.site_id')->where('site_site_categorys.site_category_id', $id)->get();
+        dd($test);
     }
 }

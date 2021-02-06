@@ -47,7 +47,7 @@
                             <input type="hidden" value="{{$item['img']}}" name="img">
                             <input type="hidden" value="{{$item['description']}}" name="description">
                             <input type="hidden" value="{{$item['turn']}}" name="turn">
-                            <p><input type="submit" class="return" value="修正"></p>
+                            <p><input type="submit" class="return" name="return" value="修正"></p>
                         </form>
                         <form action="/done{{isset($item['record_id']) ? '?id=' . $item['record_id'] : ''}}" method="post">
                             @csrf

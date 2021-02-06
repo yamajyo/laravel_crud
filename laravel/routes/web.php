@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'UserController@index');
 
 //ログインフォームのリクエスト
 Route::get('/test', 'TestController@test');
@@ -36,3 +37,6 @@ Route::post('/delete', 'SiteController@delete');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('joinTest', 'SiteController@join');
