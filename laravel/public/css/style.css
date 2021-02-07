@@ -1,59 +1,6 @@
-h1{
-    width: 330px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    text-align: left;
-    padding-left: 0px;
-}
-
-html{
-    background-color: silver;
-}
-
-form, h1{
-    text-align: center;
-}
-
-table{
-    width: 700px;
-}
-
-.managementTable th{
-    background-color: black;
-    color: white;
-}
-
-.main{
-    width: 900px;
-    height: 1200px;
-    margin-top: -50px;
-    background-color: white;
-    margin: auto;
-}
-
-p{
-    margin-top: 0px;
-    margin-bottom: 0px  ;
-}
-
-.site_list th, td{
-    text-align: center;
-}
-
-.site_list{
-    margin: auto;
-    margin-top: 50px;
-    width: 600px;
-}
-
-.site_list th{
-    width: 150px;
-}
-
 .edit_form{
     margin: auto;
     margin-top: 50px;
-    border-collapse: collapse
 }
 
 .edit_form th{
@@ -83,74 +30,17 @@ p{
     box-shadow: 2px 2px;
 }
 
-.site_category_list{
-    width: 80px;
-}
-
-img{
-    width: 60px;
-}
-
-.login{
-   margin: auto;
-}
-
-.login_table tr th{
-    border: none;
-}
-
-.login_table tr td{
-    border: none;
-}
-
-
-.login_table{
-    margin-top: 30px;
-    margin-left: 320px;
-}
-
-.login_table tr td{
-    text-align: left;
-}
-
-.login_table tr th{
-    text-align: right;
-}
-
-.login_submit{
-    margin-top: 20px;
-    border-radius: 2px;
-}
-
-.logout{
-    margin-left: 580px;
-    text-decoration: none;
-}
-
 .sortLink {
     display: block;
-    margin-bottom: 0px;
+    margin-left: 120px;
     color: #5858ad;
     font-size: 30px;
     margin-bottom: -10px;
-    margin-top: -10px;
+    margin-top: -20px;
     text-decoration: none;
 }
 
-button{
-    border-radius: 2px;
-}
-
-table{
-    border-collapse: collapse;
-}
-
-th, td{
-    border: 1px solid black;
-}
-
 .send{
-    border:0px none;
     display: inline-flex;
 }
 
@@ -160,6 +50,7 @@ th, td{
     box-shadow:1px 1px 1px 1px #555555;
     padding-left: 20px;
     padding-right: 20px;
+    margin-left: 500px;
 }
 
 .conf_proceed{
@@ -181,22 +72,6 @@ th, td{
     box-shadow:1px 1px 1px 1px #888484;
 }
 
-.site_list{
-    width: 800px;
-}
-
-.managementTable th{
-    border: 2px white solid;
-}
-
-.Choice{
-    border-bottom: 2px solid #ff1493 !important;
-}
-
-.userName{
-    padding-top: 0px;
-}
-
 .edit{
     border-radius: 5px;
     border:2px solid #555555;
@@ -208,15 +83,11 @@ th, td{
     margin-left: -5px;
 }
 
-.register{
-    border-radius: 5px;
-    border:2px solid #555555;
-}
-
 .conf_table{
     width: 620px;
     margin: auto;
     margin-top: 40px;
+    border:2px solid #555555;
 }
 
 .conf_table tr th{
@@ -229,7 +100,6 @@ th, td{
     font-size: 25px;
 }
 
-.error{
-    text-align: center;
-    color: red;
+.menu{
+    margin-bottom: 30px;
 }
