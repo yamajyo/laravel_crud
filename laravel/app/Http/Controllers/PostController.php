@@ -13,8 +13,7 @@ class PostController extends Controller
     function index(Request $request)
     {
         //ソート機能をカテゴリー選択した後でも機能させるため、カテゴリーを選択した場合のクエリを取得
-        if(isset($request->postId))
-        {
+        if (isset($request->postId)) {
             $postId = $request->postId;
         } else {
             $postId = '';

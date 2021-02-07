@@ -1,4 +1,3 @@
-<!-- edit画面のbladeテンプレート -->
 @extends('layouts.bbslayout')
 
 @section('title', 'webプログラム掲示板 記事投稿入力ページ')
